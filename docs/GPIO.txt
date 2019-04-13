@@ -1,0 +1,24 @@
+in qemu/
+mkdir build/
+cd build/
+../configure --target-list=aarch64-softmmu,aarch64-linux-user,aarch64_be-linux-user
+make   #wait for 10min+...
+
+../qemu/build/aarch64-softmmu/qemu-system-aarch64 \
+    -kernel bootpart/vmlinuz-4.14.0-3-arm64 \
+    -initrd bootpart/initrd.img-4.14.0-3-arm64 \
+    -dtb bootpart/bcm2837-rpi-3-b.dtb \
+    -M raspi3 -m 1024 \
+    -serial stdio \
+    -append "rw earlycon=pl011,0x3f201000 console=ttyAMA0 loglevel=8 root=/dev/mmcblk0p2 fsck.repair=yes net.ifnames=0 rootwait memtest=1" \
+    -drive file=2018-01-08-raspberry-pi-3-buster-PREVIEW.img,format=raw,if=sd \
+    -no-reboot
+
+cd /sys/class/gpio
+echo 480 > export
+echo out > gpio480/direction
+echo 0 > gpio480/value
+echo 1 > gpio480/value
+
+should see strings start with [GPIObcm...]
+

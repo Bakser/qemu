@@ -145,7 +145,7 @@ static uint64_t bcm2835_gpio_read(void *opaque, hwaddr offset,
         unsigned size)
 {
     BCM2835GpioState *s = (BCM2835GpioState *)opaque;
-
+    printf("[GPIObcmRead] MMIOaddr %#lX offset %#lX\n",s->parent_obj.mmio[0].addr,offset);
     switch (offset) {
     case GPFSEL0:
     case GPFSEL1:
@@ -198,7 +198,7 @@ static void bcm2835_gpio_write(void *opaque, hwaddr offset,
         uint64_t value, unsigned size)
 {
     BCM2835GpioState *s = (BCM2835GpioState *)opaque;
-
+    printf("[GPIObcmWrite] MMIOaddr %#lX offset %#lX value %#lx \n",s->parent_obj.mmio[0].addr,offset,value);
     switch (offset) {
     case GPFSEL0:
     case GPFSEL1:
